@@ -1,17 +1,51 @@
+<p-dialog header="Acesso Administração" [(visible)]="EntradaLogin" [style]="{width: '50%'}">
+  <form [formGroup]="Form" (ngSubmit)="Login()" novalidate>
+    <div class="form-row">
+
+      <mat-form-field class="example-form-field" style="width: 100%;">
+        <mat-label>Usuario</mat-label>
+        <input matInput type="text" formControlName="Usuario">
+      </mat-form-field>
+
+    </div>
+    <div class="form-row">
+      <mat-form-field class="example-form-field" style="width: 100%;">
+        <mat-label>Senha</mat-label>
+        <input matInput type="password" formControlName="Senha">
+      </mat-form-field>
+
+    </div>
+    <div class="form-row">
+      <div class="text-right" style="width: 100%;">
+        <button mat-raised-button color="primary" (click)="Login()">Acesso</button>
+      </div>
+
+    </div>
+  </form>
+</p-dialog>
+
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-  <h5 class="my-0 mr-md-auto font-weight-normal">Company name</h5>
-  <nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 text-dark" href="#">Usuários</a>
-    <a class="p-2 text-dark" href="#">Envio de Link</a>
-    <a class="p-2 text-dark" href="#">Recebimento de Material</a>
-    <a class="p-2 text-dark" href="#">Doação de Material</a>
-    <a class="p-2 text-dark" href="#">Alimento</a>
-    <a class="p-2 text-dark" href="#">Saldo</a>
+  <div class="my-0 mr-md-auto">
+    <p class="font-weight-normal" style="font-size: 150%;">
+      <a href="javascript:void(0)" routerLink="home">Ajuda</a>
+      
+    </p>
+    <span *ngIf="Usuario">{{Usuario.Usuario.Nome}}</span>
+  </div>
+
+  <nav class="my-2 my-md-0 mr-md-3" *ngIf="Usuario">
+    <a class="p-2 text-dark" routerLink="usuario">Usuários</a>
+    <a class="p-2 text-dark" routerLink="enviolink">Envio de Link</a>
+    <a class="p-2 text-dark" routerLink="recebimento">Recebimento de Material</a>
+    <a class="p-2 text-dark" routerLink="doacao">Doação de Material</a>
+    <a class="p-2 text-dark" routerLink="alimento">Alimento</a>
+    <a class="p-2 text-dark" routerLink="trocasenha">Troca de Senha</a>
   </nav>
-  <a class="btn btn-outline-primary" href="#">Sign up</a>
+
+  <a *ngIf="!Usuario" class="btn btn-outline-primary" href="javascript:void(0)" (click)="AbreLogin()">Acesso</a>
+  <a *ngIf="Usuario" class="btn btn-outline-primary" href="javascript:void(0)" (click)="Sair()">Sair</a>
 </div>
 
 <div class="container">
   <router-outlet></router-outlet>
 </div>
-
