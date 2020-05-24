@@ -1,1 +1,95 @@
-<p>usuario works!</p>
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">Lista de Usuário
+                <a class="float-right" href="javascript:void(0)" (click)="Edita(null)"><i class="pi pi-plus"></i></a>
+            </div>
+            <div class="card-body">
+                <p-table [value]="Lista" [paginator]="true" [rows]="10">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pSortableColumn="Nome">Nome
+                                <p-sortIcon field="Nome"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="Email">Email
+                                <p-sortIcon field="Email"></p-sortIcon>
+                            </th>
+                            <th>Adm</th>
+                            <th>Doador</th>
+                            <th>Músico</th>
+                            <th>Loja</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-item>
+                        <tr>
+                            <td><a href="javascript:void(0)" (click)="Edita(item)"><i class="pi pi-user-edit"></i></a>
+                                {{item.Nome}}</td>
+                            <td>{{item.Email}}</td>
+                            <td>
+                                <mat-checkbox [(ngModel)]="item.Administrador" [disabled]="true"></mat-checkbox>
+                            </td>
+                            <td>
+                                <mat-checkbox [(ngModel)]="item.Doador" [disabled]="true"></mat-checkbox>
+                            </td>
+                            <td>
+                                <mat-checkbox [(ngModel)]="item.Musico" [disabled]="true"></mat-checkbox>
+                            </td>
+                            <td>
+                                <mat-checkbox [(ngModel)]="item.Comerciante" [disabled]="true"></mat-checkbox>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-top: 16px;" *ngIf="ShowForm">
+    <div class="col-md-8">
+        <form [formGroup]="Form" (ngSubmit)="Grava()" novalidate>
+            <div class="card">
+                <div class="card-header">Edição</div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Nome do Usuario</mat-label>
+                            <input matInput placeholder="Fulano..." formControlName="Nome" required>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-row">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Email</mat-label>
+                            <input matInput placeholder="xpto@algumacoisa.com" formControlName="Email" required>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-row">
+                        <mat-checkbox class="example-full-width" formControlName="Administrador">Administrador
+                        </mat-checkbox>
+                    </div>
+                    <div class="form-row">
+                        <mat-checkbox class="example-full-width" formControlName="Doador">Doador
+                        </mat-checkbox>
+                    </div>
+                    <div class="form-row">
+                        <mat-checkbox class="example-full-width" formControlName="Musico">Músico
+                        </mat-checkbox>
+                    </div>
+                    <div class="form-row">
+                        <mat-checkbox class="example-full-width" formControlName="Comerciante">Loja
+                        </mat-checkbox>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button type="button" mat-raised-button (click)="ShowForm=false;"><i class="pi pi-ban"></i></button>
+                    <button type="submit" mat-raised-button color="primary" style="margin-left: 16px;">
+                        <i class="pi pi-save"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

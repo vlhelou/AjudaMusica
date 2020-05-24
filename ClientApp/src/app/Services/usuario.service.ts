@@ -4,6 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Usuario } from '../Types/Usuario';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+
 
 const PathUrl = environment.root + 'api/usuario/';
 
@@ -19,7 +21,10 @@ export class UsuarioService {
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {
     this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -44,6 +49,7 @@ export class UsuarioService {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+    this.router.navigateByUrl('/home');
   }
 
   Grava(item: Usuario): Promise<Usuario> {
@@ -64,5 +70,11 @@ export class UsuarioService {
     const url = PathUrl + `Busca/${id}`;
     return this.http.get<Usuario>(url).toPromise<Usuario>();
   }
+
+  Pesquisa(prm: any): Promise<Usuario[]> {
+    const url = PathUrl + `Pesquisa`;
+    return this.http.post<Usuario[]>(url, prm, httpOptions).toPromise<Usuario[]>();
+  }
+
 
 }

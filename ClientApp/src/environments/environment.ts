@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  root: 'https://localhost:5001/',
+  root: 'http://localhost:5000/',
   production: false
 };
 

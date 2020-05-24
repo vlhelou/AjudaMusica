@@ -5,6 +5,8 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
+using System.Collections.Generic;
 
 namespace AjudaMusica.Api
 {
@@ -106,12 +108,51 @@ namespace AjudaMusica.Api
         }
 
         [HttpGet("[action]/{id}")]
-        public Model.Usuario Busca(int id)
+        public async Task<Model.Usuario> Busca(int id)
         {
-            var localizado = db.Usuario.Where(p => p.Id == id).FirstOrDefault();
-            if (localizado==null)
+            var localizado = await db.Usuario.Where(p => p.Id == id).FirstOrDefaultAsync();
+            if (localizado == null)
                 throw new Exception("não localizado");
             return localizado;
         }
+
+        [HttpPost("[action]")]
+        public async Task<List<Model.Usuario>> Pesquisa([FromBody] JsonElement prm)
+        {
+            int top = 100000;
+            int ct = 0;
+            System.Text.StringBuilder where = new System.Text.StringBuilder();
+            List<object> valores = new List<object>();
+
+
+            if (prm.TryGetProperty("Nome", out JsonElement nome) && nome.ValueKind == JsonValueKind.String)
+            {
+                where.AppendFormat(" and Nome.StartsWith(@{0}) ", ct);
+                valores.Add(nome.GetString().ToLower());
+                ct++;
+            }
+
+            if (prm.TryGetProperty("Top", out JsonElement vtop) && vtop.ValueKind == JsonValueKind.Number)
+            {
+                top = vtop.GetInt32();
+            }
+
+
+            if (where.ToString().StartsWith(" and"))
+            {
+                where.Remove(0, 4);
+                return await db.Usuario.Where(where.ToString(), valores.ToArray())
+                    .AsNoTracking()
+                    .Take(top)
+                    .OrderBy(p => p.Nome)
+                    .ToListAsync();
+            }
+            else
+            {
+                return await db.Usuario.AsNoTracking().OrderBy(p => p.Nome).ToListAsync();
+            }
+
+        }
+
     }
 }

@@ -31,7 +31,7 @@ namespace AjudaMusica
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<Model.DB>(Opt => Opt.UseSqlServer(Configuration.GetConnectionString("db")));
-            services.AddControllersWithViews();
+            // services.AddControllersWithViews();
             services.AddControllers().AddJsonOptions(p =>
             {
                 p.JsonSerializerOptions.PropertyNamingPolicy = null;
@@ -41,7 +41,7 @@ namespace AjudaMusica
 
 
             byte[] chavejwt = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("jwt"));
-            jwt.Secret=chavejwt;
+            jwt.Secret = chavejwt;
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -97,17 +97,18 @@ namespace AjudaMusica
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseCors("generica");
+                // app.UseDeveloperExceptionPage();
             }
+            app.UseCors("generica");
 
             app.UseStaticFiles();
-            if (!env.IsDevelopment())
-            {
-                app.UseSpaStaticFiles();
-            }
+            app.UseSpaStaticFiles();
+            // if (!env.IsDevelopment())
+            // {
+            //     app.UseSpaStaticFiles();
+            // }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -117,6 +118,10 @@ namespace AjudaMusica
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                // endpoints.MapControllerRoute(
+                //     name: "default",
+                //     pattern: "{controller}/{action=Index}/{id?}");
+
             });
             app.UseSpa(spa =>
             {
