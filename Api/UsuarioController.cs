@@ -132,6 +132,33 @@ namespace AjudaMusica.Api
                 ct++;
             }
 
+            if (prm.TryGetProperty("Administrador", out JsonElement administrador) && administrador.ValueKind != JsonValueKind.Undefined)
+            {
+                where.AppendFormat(" and Administrador = @{0} ", ct);
+                valores.Add(administrador.GetBoolean());
+                ct++;
+            }
+
+            if (prm.TryGetProperty("Doador", out JsonElement doador) && doador.ValueKind != JsonValueKind.Undefined)
+            {
+                where.AppendFormat(" and Doador = @{0} ", ct);
+                valores.Add(doador.GetBoolean());
+                ct++;
+            }
+            if (prm.TryGetProperty("Musico", out JsonElement musico) && musico.ValueKind != JsonValueKind.Undefined)
+            {
+                where.AppendFormat(" and Musico = @{0} ", ct);
+                valores.Add(musico.GetBoolean());
+                ct++;
+            }
+            if (prm.TryGetProperty("Comerciante", out JsonElement comerciante) && comerciante.ValueKind != JsonValueKind.Undefined)
+            {
+                where.AppendFormat(" and Comerciante = @{0} ", ct);
+                valores.Add(comerciante.GetBoolean());
+                ct++;
+            }
+
+
             if (prm.TryGetProperty("Top", out JsonElement vtop) && vtop.ValueKind == JsonValueKind.Number)
             {
                 top = vtop.GetInt32();
@@ -149,7 +176,7 @@ namespace AjudaMusica.Api
             }
             else
             {
-                return await db.Usuario.AsNoTracking().OrderBy(p => p.Nome).ToListAsync();
+                return await db.Usuario.AsNoTracking().Take(top).OrderBy(p => p.Nome).ToListAsync();
             }
 
         }

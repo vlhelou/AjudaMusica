@@ -4,9 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AjudaMusica.Model
 {
-    public class Entrada
+    public class vwEntrada
     {
-
         [Key]
         public Guid Id { get; set; }
         public int IdAutor { get; set; }
@@ -15,7 +14,7 @@ namespace AjudaMusica.Model
         public DateTime DataRegistro { get; set; }
         public string ConteudoTipo { get; set; }
         public string ConteudoNome { get; set; }
-        public byte[] Conteudo { get; set; }
+
 
         [ForeignKey("IdAutor")]
         public Usuario Autor { get; set; }
@@ -26,7 +25,5 @@ namespace AjudaMusica.Model
         [ForeignKey("IdComerciante")]
         public Usuario Comerciante { get; set; }
 
-
     }
-
 }

@@ -20,7 +20,7 @@ namespace AjudaMusica
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Sid, user.Id.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddHours(2),
+                Expires = DateTime.UtcNow.AddDays(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

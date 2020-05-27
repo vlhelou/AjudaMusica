@@ -1,0 +1,10 @@
+<mat-form-field class="example-full-width">
+    <mat-label>{{Titulo}}</mat-label>
+    <input type="text" matInput [formControl]="valor" [matAutocomplete]="auto" [required]="required" (blur)="Saida($event)">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="ItemSelecionado($event)">
+        <mat-option *ngFor="let option of lista" [value]="option">
+          {{option.Nome}}
+        </mat-option>
+      </mat-autocomplete>
+</mat-form-field>
+

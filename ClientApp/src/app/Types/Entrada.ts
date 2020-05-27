@@ -8,6 +8,7 @@ export interface Entrada {
     IdComerciante?: number;
     DataRegistro: Date;
     ConteudoTipo: string;
+    Conteudo: any;
 
     Autor: Usuario;
     Doador: Usuario;

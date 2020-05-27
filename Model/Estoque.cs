@@ -16,7 +16,7 @@ namespace AjudaMusica.Model
         public int IdAlimento { get; set; }
         public int Quantidade { get; set; }
 
-        public Entrada Entrada {get;set;}
+        public vwEntrada Entrada {get;set;}
         public Saida Saida {get;set;}
         public Usuario Autor {get;set;}
         public Alimento Alimento {get;set;}

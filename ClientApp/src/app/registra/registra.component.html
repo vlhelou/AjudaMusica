@@ -1,0 +1,32 @@
+<div class="row" *ngIf="Selecionado">
+    <div class="col-md-7">
+        <form [formGroup]="Form" (ngSubmit)="Grava()" novalidate>
+            <div class="card">
+                <div class="card-header">Envio de Nota Fisca</div>
+                <div class="card-body">
+                    <dl>
+                        <dt>Doador</dt>
+                        <dd>{{Selecionado.Doador.Nome}}</dd>
+                        <dt>Comerciante</dt>
+                        <dd>{{Selecionado.Comerciante.Nome}}</dd>
+                    </dl>
+                    <div *ngIf="!Selecionado.Conteudo">
+                        <label>Arquivo</label>
+                        <input type="file" #inputfile (change)="changeListener($event)" style="width: 100%;">
+                    </div>
+
+                </div>
+                <div class="card-footer text-right">
+
+                    <button *ngIf="!Selecionado.Conteudo" type="submit" mat-raised-button color="primary"
+                        style="margin-left: 16px;" [disabled]="!ArquivoCarregado">
+                        <i class="pi pi-save"></i></button>
+                    <p *ngIf="Selecionado.Conteudo">
+                        Obrigado por enviar a NF
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<h3 *ngIf="Mensagem">{{Mensagem}}</h3>

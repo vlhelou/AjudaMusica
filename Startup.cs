@@ -103,12 +103,6 @@ namespace AjudaMusica
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-            // if (!env.IsDevelopment())
-            // {
-            //     app.UseSpaStaticFiles();
-            // }
-
-            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -118,15 +112,13 @@ namespace AjudaMusica
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                // endpoints.MapControllerRoute(
-                //     name: "default",
-                //     pattern: "{controller}/{action=Index}/{id?}");
+            });
 
-            });
+
             app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
-            });
+                        {
+                            spa.Options.SourcePath = "ClientApp";
+                        });
 
         }
     }

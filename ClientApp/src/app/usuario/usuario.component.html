@@ -6,7 +6,7 @@
                 <a class="float-right" href="javascript:void(0)" (click)="Edita(null)"><i class="pi pi-plus"></i></a>
             </div>
             <div class="card-body">
-                <p-table [value]="Lista" [paginator]="true" [rows]="10">
+                <p-table [value]="Lista" [paginator]="true" [rows]="10"  [autoLayout]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th pSortableColumn="Nome">Nome
