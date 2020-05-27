@@ -1,6 +1,7 @@
-<div class="row" style="margin-top: 16px;">
+<div class="row">
     <div class="col-md-12">
-        <p-table [value]="Lista" [paginator]="true" [rows]="10" [autoLayout]="true" selectionMode="single" [(selection)]="Selecionado" dataKey="Id">
+        <p-table [value]="Lista" [paginator]="true" [rows]="10" [autoLayout]="true" selectionMode="single"
+            [(selection)]="Selecionado" dataKey="Id" (onRowSelect)="DoacaoSelecionado($event)">
             <ng-template pTemplate="header">
                 <tr>
                     <th pSortableColumn="DataRegistro">Data
@@ -26,10 +27,10 @@
                     <td> {{item.Comerciante.Nome}} </td>
                     <td> {{item.Doador.Nome}} </td>
                     <td>
-                        <a  href="{{PathDownload(item.Id)}}">
+                        <a href="{{PathDownload(item.Id)}}">
                             <img src="{{PathDownload(item.Id)}}" style="max-width: 50px; max-height: 50px;">
                         </a>
-                        
+
                     </td>
                 </tr>
             </ng-template>
@@ -37,21 +38,70 @@
 
     </div>
 </div>
-<div class="row" *ngIf="Selecionado">
-    <div class="col-md-4">
+
+<div class="row" *ngIf="Selecionado" style="margin-top: 16px;">
+    <div class="col-md-5">
         <div class="card">
-        <div class="card-header">Entrada de Alimentos</div>
-        <div class="card-body"></div>
-        <div class="card-footer"></div>
+            <div class="card-header">Entrada de Alimentos</div>
+            <div class="card-body">
+                <form [formGroup]="Form" (ngSubmit)="Grava()" novalidate>
+                    <app-alimento-autocomplete 
+                        [Filtro]="{Top:10}" 
+                        Titulo="Pesquisa Alimento" 
+                        
+                        formControlName="Alimento"></app-alimento-autocomplete>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Quantidade</mat-label>
+                        <input type="number" matInput placeholder="Quantidade" formControlName="Quantidade" required>
+                    </mat-form-field>
+                    <div class="text-right" style="width: 100%;">
+                        <button type="submit" mat-raised-button color="primary" style="margin-left: 16px;"
+                            [disabled]="!Form.valid">
+                            <i class="pi pi-save"></i></button>
+
+                    </div>
+                </form>
+                <div style="margin-top: 10px;">
+                    <p-table [value]="EntradaItens" [paginator]="true" [rows]="10" [autoLayout]="true">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="Alimento.Nome">Alimento
+                                    <p-sortIcon field="Alimento.Nome"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="Quantidade">Quantidade
+                                    <p-sortIcon field="Quantidade"></p-sortIcon>
+                                </th>
+                                <th>Ação
+    
+                                </th>
+    
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item>
+                            <tr>
+                                <td> {{item.Alimento.Nome}} </td>
+                                <td class="text-right"> {{item.Quantidade}} </td>
+                                <td>
+                                    <a href="javascript:void(0)" (click)="Exclui(item)" style="color: red;" ><i class="pi pi-trash"></i></a>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+
+
+
+            </div>
+            <div class="card-footer"></div>
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-7">
         <div class="card">
-        <div class="card-header">NF</div>
-        <div class="card-body">
-            <img src="{{PathDownload(Selecionado.Id)}}" style="width: 100%;">
+            <div class="card-header">NF</div>
+            <div class="card-body">
+                <img src="{{PathDownload(Selecionado.Id)}}" style="width: 100%;">
+            </div>
         </div>
-        </div>
-        
+
     </div>
 </div>

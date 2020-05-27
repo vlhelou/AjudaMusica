@@ -7,7 +7,7 @@
             </div>
             <div class="card-body">
                 <app-alimento-autocomplete [Filtro]="{Top:10}" Titulo="Pesquisa Alimento" [required]="true"
-                    [(ngModel)]="Selecionado" (change)="Edita($event)"></app-alimento-autocomplete>
+                    [(ngModel)]="Selecionado" (change)="Edita($event)" [required]="true"></app-alimento-autocomplete>
                 <p-table [value]="Lista" [paginator]="true" [rows]="10"  [autoLayout]="true">
                     <ng-template pTemplate="header">
                         <tr>

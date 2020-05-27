@@ -16,9 +16,16 @@ namespace AjudaMusica.Model
         public int IdAlimento { get; set; }
         public int Quantidade { get; set; }
 
+        [ForeignKey("IdEntrada")]
         public vwEntrada Entrada {get;set;}
+        
+        [ForeignKey("IdSaida")]
         public Saida Saida {get;set;}
+
+        [ForeignKey("IdAutor")]
         public Usuario Autor {get;set;}
+        
+        [ForeignKey("IdAlimento")]
         public Alimento Alimento {get;set;}
     }
 }

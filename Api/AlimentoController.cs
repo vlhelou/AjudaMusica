@@ -28,11 +28,11 @@ namespace AjudaMusica.Api
             if (item == null)
                 throw new Exception("sem parametro");
 
+            item.Nome = item.Nome.Trim();
             if (item.Id == 0)
                 db.Entry(item).State = EntityState.Added;
             else
             {
-                item.Saldo = 0;
                 db.Entry(item).State = EntityState.Modified;
             }
             await db.SaveChangesAsync();

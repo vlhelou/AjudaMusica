@@ -27,17 +27,21 @@ namespace AjudaMusica.Api
             return await db.Estoque
                 .Where(p => p.IdEntrada == id)
                 .Include(p => p.Entrada)
+                .Include(p=>p.Alimento)
                 .AsNoTracking().ToListAsync();
         }
 
         [HttpPost("[action]")]
-        public async Task<Model.Estoque> EntradaGrava([FromBody] Model.Estoque item)
+        public async Task<Model.Estoque> Grava([FromBody] Model.Estoque item)
         {
+            Model.Usuario logado = Util.Claim2Usuario(HttpContext.User.Claims);
             if (item == null)
                 throw new Exception("sem parâmetro");
 
+            item.IdAutor = logado.Id;
             if (item.Id == 0)
             {
+                item.IdAlimento=item.Alimento.Id;
                 db.Entry(item).State = EntityState.Added;
             }
             else
@@ -49,7 +53,7 @@ namespace AjudaMusica.Api
         }
 
         [HttpGet("[action]/{id}")]
-        public async Task EntradaExclui(int id)
+        public async Task Exclui(int id)
         {
             var localizado = await db.Estoque.FindAsync(id);
             if (localizado == null)

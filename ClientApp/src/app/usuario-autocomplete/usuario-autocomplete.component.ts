@@ -99,6 +99,7 @@ export class UsuarioAutocompleteComponent implements ControlValueAccessor {
   writeValue(value: any) {
     if (value !== this.innerValue) {
       this.innerValue = value;
+      this.valor.setValue(value);
     }
   }
 

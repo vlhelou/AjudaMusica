@@ -6,7 +6,6 @@ import { Alimento } from '../Types/Alimento';
 const noop = () => {
 };
 
-
 @Component({
   selector: 'app-alimento-autocomplete',
   templateUrl: './alimento-autocomplete.component.html',
@@ -17,13 +16,14 @@ const noop = () => {
     multi: true
   }]
 })
+
 export class AlimentoAutocompleteComponent implements ControlValueAccessor {
 
   lista: Alimento[];
-  valor = new FormControl();
+  value = new FormControl();
   private filtro: any;
 
-  private innerValue: Alimento;
+  private innerValue: any;
   @Input() Titulo: string;
   @Input() required: any;
   @Input('Filtro')
@@ -34,24 +34,36 @@ export class AlimentoAutocompleteComponent implements ControlValueAccessor {
   // tslint:disable-next-line: no-output-native
   @Output() change = new EventEmitter();
   private onTouchedCallback: () => void = noop;
-  private onChangeCallback: (_: Alimento) => void = noop;
+  private onChangeCallback: (_: any) => void = noop;
 
   constructor(private srv: AlimentoService) {
-
-    this.valor.valueChanges.subscribe(q => {
+    this.value.valueChanges.subscribe(entrada => {
       this.lista = [];
-      if (typeof q === 'string' && q.trim() !== '') {
-        this.filtro.Chave = q.trim();
+      if (typeof entrada === 'string' && entrada.trim() !== '') {
+        this.filtro.Nome = entrada.trim();
         this.srv.Pesquisa(this.filtro).then(p => this.lista = p);
-      } else {
-        if (typeof q === 'object') {
-          this.change.emit(q);
-          this.innerValue = q;
-          this.onChangeCallback(q);
+        if (this.required) {
+          this.innerValue = null;
+        } else {
+          this.change.emit(entrada);
+          this.innerValue = entrada;
+          this.onChangeCallback(entrada);
+
         }
       }
     });
   }
+
+  ItemSelecionado(event) {
+    // console.log(event);
+    // console.log(event.option.value);
+    if (event) {
+      this.change.emit(event);
+      this.innerValue = event;
+      this.onChangeCallback(event);
+    } 
+  }
+
 
 
   displayFn(user?: any): string | undefined {
@@ -62,6 +74,7 @@ export class AlimentoAutocompleteComponent implements ControlValueAccessor {
   writeValue(value: any) {
     if (value !== this.innerValue) {
       this.innerValue = value;
+      this.value.setValue(value);
     }
   }
 

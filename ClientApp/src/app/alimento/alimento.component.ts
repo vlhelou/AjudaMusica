@@ -14,7 +14,6 @@ export class AlimentoComponent implements OnInit {
   Form = new FormGroup({
     Id: new FormControl(),
     Nome: new FormControl('', [Validators.required]),
-    Saldo: new FormControl(''),
   });
 
   ShowForm = false;
@@ -30,7 +29,7 @@ export class AlimentoComponent implements OnInit {
       this.Form.reset(item);
     } else {
       this.Selecionado = null;
-      this.Form.reset({ Id: 0, Saldo: 0 });
+      this.Form.reset({ Id: 0 });
     }
     this.ShowForm = true;
   }

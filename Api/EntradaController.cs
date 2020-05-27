@@ -143,7 +143,7 @@ namespace AjudaMusica.Api
 
         [AllowAnonymous]
         [HttpGet("[action]/{vid}")]
-        public async Task<IActionResult > Download(string vid)
+        public async Task<IActionResult> Download(string vid)
         {
             Guid id = Guid.Parse(vid);
             Model.Entrada retorno = await db.Entrada.FindAsync(id);
@@ -157,8 +157,9 @@ namespace AjudaMusica.Api
         {
             var q = await (from entrada in db.vwEntrada.Include(p => p.Comerciante).Include(p => p.Autor).Include(p => p.Doador)
                            join estoque in db.Estoque on entrada.Id equals estoque.IdEntrada into vazio
-                           from estoque in vazio.DefaultIfEmpty()
-                           where entrada.ConteudoTipo != null
+                           from semestoque in vazio.DefaultIfEmpty()
+                           where
+                                entrada.ConteudoTipo != null & semestoque == null
                            select entrada).AsNoTracking().ToListAsync();
             return q;
         }
