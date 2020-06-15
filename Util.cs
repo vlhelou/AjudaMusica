@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-
+using System.Text.Json;
 
 namespace AjudaMusica
 {
@@ -47,6 +48,72 @@ namespace AjudaMusica
         }
 
 
+        public static System.Text.Json.JsonElement Datatable2Json(System.Data.DataTable dt)
+        {
+            using (System.IO.MemoryStream strwrite = new System.IO.MemoryStream())
+            {
+                using (System.Text.Json.Utf8JsonWriter writer = new Utf8JsonWriter(strwrite))
+                {
+                    writer.WriteStartArray();
+                    foreach (System.Data.DataRow ln in dt.Rows)
+                    {
+                        writer.WriteStartObject();
+                        for (int i = 0; i < dt.Columns.Count; i++)
+                        {
+                            //var x = dt.Columns[i].DataType;
+                            if (ln[i] == DBNull.Value)
+                            {
+                                writer.WriteNull(dt.Columns[i].ColumnName);
+                            }
+                            else
+                            {
+                                switch (Type.GetTypeCode(dt.Columns[i].DataType))
+                                {
+
+                                    case TypeCode.String:
+                                        writer.WriteString(dt.Columns[i].ColumnName, ln[i].ToString());
+                                        break;
+                                    case TypeCode.DateTime:
+                                        writer.WriteString(dt.Columns[i].ColumnName, (DateTime)ln[i]);
+                                        break;
+                                    case TypeCode.Int16:
+                                        writer.WriteNumber(dt.Columns[i].ColumnName, (Int16)ln[i]);
+                                        break;
+                                    case TypeCode.Int32:
+                                        writer.WriteNumber(dt.Columns[i].ColumnName, (Int32)ln[i]);
+                                        break;
+                                    case TypeCode.Int64:
+                                        writer.WriteNumber(dt.Columns[i].ColumnName, (Int64)ln[i]);
+                                        break;
+                                    case TypeCode.Decimal:
+                                        writer.WriteNumber(dt.Columns[i].ColumnName, (decimal)ln[i]);
+                                        break;
+                                    case TypeCode.Boolean:
+                                        writer.WriteBoolean(dt.Columns[i].ColumnName, (bool)ln[i]);
+                                        break;
+
+                                    default:
+                                        writer.WriteString(dt.Columns[i].ColumnName, "não sei");
+                                        Console.WriteLine(Type.GetTypeCode(dt.Columns[i].DataType));
+                                        break;
+                                }
+
+                            }
+                        }
+                        writer.WriteEndObject();
+                    }
+
+                    writer.WriteEndArray();
+                }
+                strwrite.Position = 0;
+                System.IO.StreamReader sr = new System.IO.StreamReader(strwrite);
+                string str = sr.ReadToEnd();
+                sr.Dispose();
+
+                return JsonSerializer.Deserialize<JsonElement>(str);
+            }
+
+        }
 
     }
 }

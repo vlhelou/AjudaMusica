@@ -31,4 +31,9 @@ export class EstoqueService {
     return this.http.get<Estoque>(url).toPromise<Estoque>();
   }
 
+  SaldoPorComerciante(id: number): Promise<any[]> {
+    const url = PathUrl + `SaldoPorComerciante/${id}`;
+    return this.http.get<any[]>(url).toPromise<any[]>();
+  }
+
 }

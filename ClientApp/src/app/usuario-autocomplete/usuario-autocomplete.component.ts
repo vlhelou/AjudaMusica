@@ -64,32 +64,6 @@ export class UsuarioAutocompleteComponent implements ControlValueAccessor {
     }
   }
 
-  Saida(evento) {
-    const valor = evento.srcElement.value;
-    if (!this.required) {
-      if (typeof this.innerValue === 'object') {
-        this.change.emit(this.innerValue);
-        this.onChangeCallback(this.innerValue);
-      } else {
-        this.change.emit(evento.srcElement.value);
-        this.innerValue = evento.srcElement.value;
-        this.onChangeCallback(evento.srcElement.value);
-      }
-    } else {
-      if (typeof this.innerValue === 'object' && this.innerValue !== null) {
-        this.change.emit(this.innerValue);
-        this.onChangeCallback(this.innerValue);
-      }
-      else {
-        this.valor.setValue(null);
-        this.change.emit(null);
-        this.innerValue = null;
-        this.onChangeCallback(null);
-      }
-    }
-  }
-
-
 
   displayFn(user?: any): string | undefined {
     return user ? user.Nome : undefined;

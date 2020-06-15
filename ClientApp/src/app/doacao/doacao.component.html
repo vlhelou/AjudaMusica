@@ -1,1 +1,44 @@
-<p>doacao works!</p>
+<div class="row">
+    <div class="col-md-6">
+        <form [formGroup]="Form" novalidate>
+            <div class="card">
+                <div class="card-header">Informações</div>
+                <div class="card-body">
+                    <app-usuario-autocomplete Titulo="Comerciante" [Filtro]="{Comerciante:true}"
+                        formControlName="Comerciante" (change)="BuscaSaldo($event)">
+                    </app-usuario-autocomplete>
+                    <app-usuario-autocomplete Titulo="Musico" [Filtro]="{Musico:true}" formControlName="Musico">
+                    </app-usuario-autocomplete>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">Saldo de alimentos</div>
+            <div class="card-body">
+                <p-table [value]="Saldos" [paginator]="true" [rows]="10" [autoLayout]="true">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pSortableColumn="Nome">Alimento
+                                <p-sortIcon field="Nome"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="Saldo">Saldo
+                                <p-sortIcon field="Saldo"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-item>
+                        <tr>
+                            <td><a href="javascript:void(0)" (click)="SelecionaAlimento(item)"><i class="pi pi-user-edit"></i></a>
+                                {{item.Nome}}</td>
+                            <td class="text-right">{{item.Saldo}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+
+            </div>
+        </div>
+    </div>
+</div>

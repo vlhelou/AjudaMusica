@@ -19,7 +19,7 @@ namespace AjudaMusica.Api
             db = dbContext;
         }
 
-        
+
 
         [HttpGet("[action]/{id}")]
         public async Task<List<Model.Estoque>> EntradaItens(Guid id)
@@ -27,7 +27,7 @@ namespace AjudaMusica.Api
             return await db.Estoque
                 .Where(p => p.IdEntrada == id)
                 .Include(p => p.Entrada)
-                .Include(p=>p.Alimento)
+                .Include(p => p.Alimento)
                 .AsNoTracking().ToListAsync();
         }
 
@@ -41,7 +41,7 @@ namespace AjudaMusica.Api
             item.IdAutor = logado.Id;
             if (item.Id == 0)
             {
-                item.IdAlimento=item.Alimento.Id;
+                item.IdAlimento = item.Alimento.Id;
                 db.Entry(item).State = EntityState.Added;
             }
             else
@@ -62,5 +62,32 @@ namespace AjudaMusica.Api
             db.Remove(localizado);
             await db.SaveChangesAsync();
         }
+
+        [HttpGet("[action]/{idcomerciante}")]
+        public async Task<object> SaldoPorComerciante(int idcomerciante)
+        {
+            using (var cmd = db.Database.GetDbConnection().CreateCommand())
+            {
+                cmd.Connection.Open();
+                var pid = cmd.CreateParameter();
+                pid.ParameterName = "@id";
+                pid.Value = idcomerciante;
+                cmd.Parameters.Add(pid);
+                cmd.CommandText = @"
+                select
+                        Id
+                        , Nome
+                        , dbo.fnSaldoAlimentoComerciante(id, @id) Saldo
+                    from Alimento
+                    where dbo.fnSaldoAlimentoComerciante(id, @id)!=0
+                    order by Nome";
+                using (System.Data.DataTable dt = new System.Data.DataTable())
+                {
+                    dt.Load(await cmd.ExecuteReaderAsync());
+                    return Util.Datatable2Json(dt);
+                }
+            }
+        }
+
     }
 }
